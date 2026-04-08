@@ -22,7 +22,7 @@ import SplashScreen from 'react-native-splash-screen';
         global.navRef = nav;
       }}
     >
-      {isLoggedIn ? <AppStack /> : <AuthStack />}
+      <AuthStack />
     </NavigationContainer>
   );
 };
