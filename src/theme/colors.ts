@@ -1,13 +1,13 @@
-export default {
-  primary: '#8B5CF6', // Purple
-  background: '#1a1a1a', // Dark background
-  card: '#2a2a2a', // Dark card
-  text: '#ffffff', // White text
-  secondaryText: '#999999', // Gray text
-  cardio: '#E85D5D', // Red
-  strength: '#8B5CF6', // Purple
-  endurance: '#20A39E', // Teal
-  more: '#3B82F6', // Blue
-  border: '#3a3a3a',
-  overlay: 'rgba(24,26,32,0.6)',
+export const COLORS = {
+  bg:       '#0f0f0f',
+  surface:  '#1a1a1a',
+  surface2: '#242424',
+  accent:   '#b5f23a',
+  accent2:  '#7ee8a2',
+  text:     '#f0f0f0',
+  muted:    '#888888',
+  border:   '#2e2e2e',
+  danger:   '#f2a23a',
+  black:    '#000000',
+  white:    '#ffffff',
 };

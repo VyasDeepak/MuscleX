@@ -16,16 +16,30 @@ const BottomTabNavigator = () => (
           let iconName = '';
           if (route.name === 'Home') iconName = 'home';
           else if (route.name === 'Workouts') iconName = 'dumbbell';
+          else if (route.name === 'Analytics') iconName = 'chart-line';
           else if (route.name === 'Profile') iconName = 'account';
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#1e90ff',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: '#b5f23a', // Lime green (FITFLOW)
+        tabBarInactiveTintColor: '#888',   // Muted grey
         headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#161616',     // Very dark tab bar
+          borderTopColor: '#2e2e2e',      // Dark border
+          borderTopWidth: 1,
+          height: 56,
+          paddingVertical: 8,
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '600',
+          marginTop: 4,
+        },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Workouts" component={WorkoutsScreen} />
+      <Tab.Screen name="Analytics" component={HomeScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   </NavigationContainer>

@@ -17,9 +17,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: '#fff',
+    color: '#000', // Dark text on lime green button
     fontWeight: 'bold',
     fontSize: 16,
+    letterSpacing: 0.5,
   },
 });
 

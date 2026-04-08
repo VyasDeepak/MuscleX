@@ -1,13 +1,15 @@
 import { StyleSheet } from 'react-native';
 
-// ─── Design Tokens ────────────────────────────────────────────────
-const BG        = '#0A0A0F';
-const SURFACE   = '#13131A';
-const CARD      = '#1A1A24';
-const BORDER    = '#ffffff0f';
-const TEXT      = '#F0F0F5';
-const MUTED     = '#6B6B80';
-const PRIMARY   = '#FF6B6B';
+// ─── Design Tokens (Matching HTML Mockup) ─────────────────────────
+const BG        = '#0f0f0f';    // Very dark background
+const SURFACE   = '#1a1a1a';    // Dark surface
+const CARD      = '#1a1a1a';    // Card background
+const BORDER    = '#2e2e2e';    // Dark border
+const TEXT      = '#f0f0f0';    // Off-white text
+const MUTED     = '#888';       // Muted grey
+const PRIMARY   = '#b5f23a';    // Lime green (FITFLOW accent)
+const ACCENT2   = '#7ee8a2';    // Secondary green
+const ACCENT3   = '#f2a23a';    // Orange accent
 
 const styles = StyleSheet.create({
   root: {
@@ -17,7 +19,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 16,
   },
 
   // ── Header ──────────────────────────────────────────────────────
@@ -25,92 +26,216 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    paddingVertical: 16,
+    marginBottom: 8,
   },
-  greeting: {
-    color: MUTED,
-    fontSize: 13,
-    letterSpacing: 0.4,
-    marginBottom: 4,
-  },
-  userName: {
-    color: TEXT,
-    fontSize: 22,
-    fontWeight: '800',
-    letterSpacing: -0.5,
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  iconBtn: {
+  menuBtn: {
     width: 40,
     height: 40,
-    borderRadius: 12,
-    backgroundColor: CARD,
-    borderWidth: 1,
-    borderColor: BORDER,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  iconBtnAccent: {
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: PRIMARY,
+    letterSpacing: 2,
+  },
+  bellBtn: {
     position: 'relative',
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   notifDot: {
     position: 'absolute',
     top: 8,
     right: 8,
-    width: 7,
-    height: 7,
+    width: 8,
+    height: 8,
     borderRadius: 4,
     backgroundColor: PRIMARY,
-    borderWidth: 1.5,
-    borderColor: BG,
   },
 
-  // ── Streak Banner ────────────────────────────────────────────────
-  streakBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFB80015',
-    borderWidth: 1,
-    borderColor: '#FFB80035',
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    marginBottom: 24,
+  // ── Greeting ─────────────────────────────────────────────────────
+  greeting: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: TEXT,
+    marginBottom: 20,
+    letterSpacing: -0.5,
   },
-  streakLeft: {
+
+  // ── Daily Progress Card ──────────────────────────────────────────
+  dailyProgressCard: {
+    backgroundColor: CARD,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 28,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  progressCardLeft: {
+    flexDirection: 'row',
+    gap: 24,
+  },
+  progressTextSection: {
+    justifyContent: 'center',
+  },
+  progressLabel: {
+    fontSize: 11,
+    color: MUTED,
+    fontWeight: '600',
+    letterSpacing: 0.3,
+    marginBottom: 4,
+  },
+  progressValue: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: TEXT,
+  },
+  progressRing: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    borderWidth: 5,
+    borderColor: PRIMARY,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ringEmoji: {
+    fontSize: 36,
+  },
+
+  // ── Section Container ───────────────────────────────────────────
+  sectionContainer: {
+    marginBottom: 28,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: TEXT,
+    letterSpacing: -0.3,
+  },
+  seeAll: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: PRIMARY,
+  },
+
+  // ── Today's Plan Cards ──────────────────────────────────────────
+  planScrollContent: {
+    gap: 12,
+    paddingRight: 20,
+  },
+  planCard: {
+    width: 150,
+    height: 170,
+    borderRadius: 18,
+    overflow: 'hidden',
+    flexDirection: 'column',
+  },
+  planCardImage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  planCardOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    padding: 12,
+    justifyContent: 'flex-end',
+    minHeight: 100,
+  },
+  planIconBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  planTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: TEXT,
+    lineHeight: 16,
+    marginBottom: 6,
+  },
+  planDuration: {
+    fontSize: 11,
+    color: MUTED,
+    fontWeight: '500',
+  },
+
+  // ── Routines Section ────────────────────────────────────────────
+  routinesScrollContent: {
+    gap: 12,
+    paddingRight: 20,
+  },
+  routineCard: {
+    width: 160,
+    backgroundColor: SURFACE,
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: BORDER,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
   },
-  streakEmoji: {
-    fontSize: 24,
+  routineThumbnail: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0,
   },
-  streakTitle: {
-    color: '#FFB800',
-    fontWeight: '700',
+  routineContent: {
+    flex: 1,
+  },
+  routineTitle: {
     fontSize: 14,
-    letterSpacing: 0.2,
+    fontWeight: '500',
+    color: TEXT,
+    marginBottom: 3,
   },
-  streakSub: {
-    color: '#FFB80099',
-    fontSize: 12,
-    marginTop: 2,
-  },
-  streakBadge: {
-    backgroundColor: '#FFB80025',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  streakBadgeText: {
-    color: '#FFB800',
+  routineDescription: {
     fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 1.2,
+    color: MUTED,
+    lineHeight: 13,
+  },
+  routineMeta: {
+    alignItems: 'flex-end',
+    gap: 4,
+  },
+  routineMetaText: {
+    fontSize: 11,
+    color: MUTED,
+    fontWeight: '500',
+  },
+  routineCaloriesPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 20,
+  },
+  routineCaloriesText: {
+    fontSize: 10,
+    fontWeight: '600',
   },
 
   // ── Tabs ─────────────────────────────────────────────────────────
@@ -130,7 +255,7 @@ const styles = StyleSheet.create({
   },
   tabBtnActive: {
     backgroundColor: CARD,
-    shadowColor: '#000',
+    shadowColor: '#cccccc',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -202,23 +327,41 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
   },
 
-  // ── Section Header ────────────────────────────────────────────────
-  sectionHeader: {
-    flexDirection: 'row',
+  // ── Card ──────────────────────────────────────────────────────
+  card: {
+    backgroundColor: CARD,
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+
+  // ── Routine Section ─────────────────────────────────────────────
+  routineScrollContent: {
+    paddingRight: 20,
+    gap: 12,
+    marginBottom: 32,
+  },
+  routineCardOld: {
+    width: 140,
+    backgroundColor: CARD,
+    borderRadius: 14,
+    padding: 16,
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: BORDER,
   },
-  sectionTitle: {
+  routineTitleOld: {
     color: TEXT,
-    fontSize: 17,
-    fontWeight: '800',
-    letterSpacing: -0.3,
+    fontSize: 14,
+    fontWeight: '700',
+    lineHeight: 18,
   },
-  seeAll: {
-    color: PRIMARY,
-    fontSize: 12,
-    fontWeight: '600',
+  routineDurationOld: {
+    color: MUTED,
+    fontSize: 11,
+    fontWeight: '500',
+    marginTop: 8,
   },
 
   // ── Exclusive Workout Cards ──────────────────────────────────────
@@ -234,6 +377,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: BORDER,
+  },
+  workoutImagePlaceholder: {
+    height: 120,
+    backgroundColor: SURFACE,
+    borderTopWidth: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  workoutEmoji: {
+    fontSize: 48,
   },
   cardAccentBar: {
     height: 4,
@@ -269,12 +422,22 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     lineHeight: 20,
     letterSpacing: -0.3,
-    marginBottom: 14,
+    marginBottom: 12,
   },
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  workoutMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  metaText: {
+    color: MUTED,
+    fontSize: 11,
+    fontWeight: '500',
   },
   trainerRow: {
     flexDirection: 'row',
@@ -304,7 +467,7 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   rating: {
-    color: '#FFB800',
+    color: '#D0FD3E',
     fontSize: 11,
     fontWeight: '700',
   },
@@ -351,6 +514,76 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  // ── Streak Banner ────────────────────────────────────────────────
+  streakBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#D0FD3E15',
+    borderWidth: 1,
+    borderColor: '#D0FD3E35',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 24,
+  },
+  streakLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  streakEmoji: {
+    fontSize: 24,
+  },
+  streakTitle: {
+    color: '#D0FD3E',
+    fontWeight: '700',
+    fontSize: 14,
+    letterSpacing: 0.2,
+  },
+  streakSub: {
+    color: '#D0FD3E99',
+    fontSize: 12,
+    marginTop: 2,
+  },
+  streakBadge: {
+    backgroundColor: '#D0FD3E25',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  streakBadgeText: {
+    color: '#D0FD3E',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+  },
+
+  // ── Header (old) ─────────────────────────────────────────────────
+  headerIcons: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  iconBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: CARD,
+    borderWidth: 1,
+    borderColor: BORDER,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconBtnAccent: {
+    position: 'relative',
+  },
+  userName: {
+    color: TEXT,
+    fontSize: 22,
+    fontWeight: '800',
+    letterSpacing: -0.5,
   },
 });
 

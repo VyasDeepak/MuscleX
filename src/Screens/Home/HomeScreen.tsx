@@ -1,185 +1,171 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
-  TextInput,
   TouchableOpacity,
-  StatusBar,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
 } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from './styles';
+import { COLORS } from '../../theme/colors';
+import { SectionHeader, Pill } from '../../Components/UI';
+import { WORKOUTS } from '../../data/workouts';
 
-const categories = [
-  { key: 'Cardio',    icon: 'heart-pulse',   color: '#FF6B6B' },
-  { key: 'Strength',  icon: 'dumbbell',      color: '#4ECDC4' },
-  { key: 'Endurance', icon: 'lightning-bolt', color: '#FFB800' },
-  { key: 'More',      icon: 'dots-grid',     color: '#A78BFA' },
-];
+const { width } = Dimensions.get('window');
+const CARD_W = (width - 56) / 2;
 
-const exclusiveWorkouts = [
-  { id: 1, title: 'Cardio\nTraining Sets', trainer: 'Robert Fox',  rating: 4.8, badge: 'Premium', sessions: '12 sessions', accent: '#FF6B6B' },
-  { id: 2, title: 'Strength\nTraining',    trainer: 'Jane Smith',  rating: 4.9, badge: 'Pro',     sessions: '8 sessions',  accent: '#4ECDC4' },
-  { id: 3, title: 'HIIT\nChallenge',       trainer: 'Mike Torres', rating: 4.7, badge: 'New',     sessions: '10 sessions', accent: '#FFB800' },
-];
+// Ring circumference for r=34
+const R = 34;
+const CIRC = 2 * Math.PI * R;
 
-const quickWorkouts = [
-  { id: 1, duration: '15 min', title: 'Morning Cardio', icon: 'run-fast', color: '#FF6B6B' },
-  { id: 2, duration: '20 min', title: 'Core Strength',  icon: 'arm-flex', color: '#4ECDC4' },
-  { id: 3, duration: '10 min', title: 'Stretch & Flow', icon: 'yoga',     color: '#A78BFA' },
-];
-
-const HomeScreen: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('Discover');
-  const tabs = ['Discover', 'Trainers', 'My Workouts'];
+export default function HomeScreen() {
+  const calorieProgress = 0.72; // 864 / 1200
+  const stepProgress    = 0.80; // 8k / 10k
+  const strokeDash      = CIRC * calorieProgress;
+  const strokeOffset    = CIRC * (1 - calorieProgress);
 
   return (
-    <View style={styles.root}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 48 }}
-      >
-        {/* Header */}
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.greeting}>Good morning 🔥</Text>
-            <Text style={styles.userName}>William Anderson</Text>
-          </View>
-          <View style={styles.headerIcons}>
-            <TouchableOpacity style={styles.iconBtn}>
-              <Icon name="heart-outline" size={20} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.iconBtn, styles.iconBtnAccent]}>
-              <Icon name="bell-outline" size={20} color="#fff" />
-              <View style={styles.notifDot} />
-            </TouchableOpacity>
-          </View>
+    <SafeAreaView style={s.safe}>
+      <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
+        {/* ── Header ── */}
+        <View style={s.header}>
+          <Icon name="menu" size={22} color={COLORS.muted} />
+          <Text style={s.logo}>FITFLOW</Text>
+          <TouchableOpacity>
+            <Icon name="bell-outline" size={22} color={COLORS.text} />
+          </TouchableOpacity>
         </View>
 
-        {/* Streak Banner */}
-        <View style={styles.streakBanner}>
-          <View style={styles.streakLeft}>
-            <Text style={styles.streakEmoji}>⚡</Text>
-            <View>
-              <Text style={styles.streakTitle}>7-Day Streak!</Text>
-              <Text style={styles.streakSub}>Keep pushing — you're on fire</Text>
+        {/* ── Greeting ── */}
+        <View style={s.greeting}>
+          <Text style={s.greetSub}>Good Morning,</Text>
+          <Text style={s.greetName}>Alex! 👋</Text>
+        </View>
+
+        {/* ── Goal Card ── */}
+        <View style={s.goalCard}>
+          <View style={s.goalStats}>
+            <View style={s.statItem}>
+              <Text style={s.statLabel}>Goal</Text>
+              <Text style={s.statVal}>
+                1200 <Text style={s.statUnit}>kcal</Text>
+              </Text>
+            </View>
+            <View style={s.statItem}>
+              <Text style={s.statLabel}>Steps</Text>
+              <Text style={s.statVal}>
+                8k<Text style={s.statUnit}>/10k</Text>
+              </Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.streakBadge}>
-            <Text style={styles.streakBadgeText}>VIEW</Text>
-          </TouchableOpacity>
+
+          {/* SVG Ring */}
+          <View style={s.ringWrap}>
+            <Svg width={84} height={84} viewBox="0 0 84 84">
+              {/* Track */}
+              <Circle cx="42" cy="42" r={R} fill="none" stroke="#2a2a2a" strokeWidth={7} />
+              {/* Progress */}
+              <Circle
+                cx="42"
+                cy="42"
+                r={R}
+                fill="none"
+                stroke={COLORS.accent}
+                strokeWidth={7}
+                strokeDasharray={`${strokeDash} ${CIRC}`}
+                strokeDashoffset={CIRC * 0.25}
+                strokeLinecap="round"
+                rotation="-90"
+                origin="42,42"
+              />
+            </Svg>
+            <View style={s.ringCenter}>
+              <Icon name="lightning-bolt" size={18} color={COLORS.accent} />
+              <Text style={s.ringPct}>{Math.round(calorieProgress * 100)}%</Text>
+            </View>
+          </View>
         </View>
 
-        {/* Tabs */}
-        <View style={styles.tabRow}>
-          {tabs.map(tab => (
-            <TouchableOpacity
-              key={tab}
-              onPress={() => setActiveTab(tab)}
-              style={[styles.tabBtn, activeTab === tab && styles.tabBtnActive]}
-            >
-              <Text style={[styles.tabText, activeTab === tab && styles.tabTextActive]}>
-                {tab}
-              </Text>
-            </TouchableOpacity>
-          ))}
+        {/* ── Today's Plan ── */}
+        <View style={s.sectionPad}>
+          <SectionHeader title="Today's Plan" onAction={() => {}} />
         </View>
-
-        {/* Search */}
-        <View style={styles.searchBox}>
-          <Icon name="magnify" size={18} color="#555" />
-          <TextInput
-            placeholder="Search workouts, trainers..."
-            placeholderTextColor="#555"
-            style={styles.input}
-          />
-          <TouchableOpacity style={styles.filterBtn}>
-            <Icon name="tune-variant" size={16} color="#fff" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Categories */}
-        <View style={styles.categoryRow}>
-          {categories.map(cat => (
-            <TouchableOpacity key={cat.key} style={styles.categoryItem}>
-              <View style={[styles.categoryIconWrap, { backgroundColor: cat.color + '22' }]}>
-                <Icon name={cat.icon} size={22} color={cat.color} />
-              </View>
-              <Text style={styles.categoryText}>{cat.key}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Exclusive Sets */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Exclusive Sets</Text>
-          <TouchableOpacity>
-            <Text style={styles.seeAll}>See all →</Text>
-          </TouchableOpacity>
-        </View>
-
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.workoutScrollContent}
+          contentContainerStyle={s.planScroll}
         >
-          {exclusiveWorkouts.map(workout => (
-            <TouchableOpacity key={workout.id} style={styles.workoutCard} activeOpacity={0.85}>
-              <View style={[styles.cardAccentBar, { backgroundColor: workout.accent }]} />
-              <View style={styles.cardBody}>
-                <View style={styles.cardTopRow}>
-                  <View style={[styles.badge, { backgroundColor: workout.accent + '22' }]}>
-                    <Text style={[styles.badgeText, { color: workout.accent }]}>{workout.badge}</Text>
-                  </View>
-                  <Text style={styles.cardSessions}>{workout.sessions}</Text>
-                </View>
-                <Text style={styles.workoutTitle}>{workout.title}</Text>
-                <View style={styles.cardFooter}>
-                  <View style={styles.trainerRow}>
-                    <View style={[styles.trainerAvatar, { backgroundColor: workout.accent }]}>
-                      <Text style={styles.trainerInitial}>{workout.trainer.charAt(0)}</Text>
-                    </View>
-                    <Text style={styles.trainerName}>{workout.trainer}</Text>
-                  </View>
-                  <View style={styles.ratingRow}>
-                    <Icon name="star" size={12} color="#FFB800" />
-                    <Text style={styles.rating}>{workout.rating}</Text>
-                  </View>
-                </View>
+          {WORKOUTS.map((w) => (
+            <TouchableOpacity key={w.id} style={[s.planCard, { backgroundColor: w.color, width: CARD_W }]}>
+              <View style={[s.planIcon, { backgroundColor: w.accentColor }]}>
+                <Icon name="dumbbell" size={16} color="#000" />
+              </View>
+              <View style={s.planOverlay}>
+                <Text style={s.planTitle}>{w.title}</Text>
+                <Text style={s.planMeta}>{w.duration} · {w.calories}</Text>
               </View>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        {/* Quick Workouts */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Quick Workouts</Text>
-          <TouchableOpacity>
-            <Text style={styles.seeAll}>See all →</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.quickList}>
-          {quickWorkouts.map(workout => (
-            <TouchableOpacity key={workout.id} style={styles.quickItem} activeOpacity={0.8}>
-              <View style={[styles.quickIconWrap, { backgroundColor: workout.color + '22' }]}>
-                <Icon name={workout.icon} size={22} color={workout.color} />
+        {/* ── My Routines ── */}
+        <View style={[s.sectionPad, { marginTop: 24 }]}>
+          <SectionHeader title="My Routines" onAction={() => {}} />
+          {WORKOUTS.map((w) => (
+            <TouchableOpacity key={w.id} style={s.routineItem}>
+              <View style={[s.routineThumb, { backgroundColor: w.color }]}>
+                <Icon name="dumbbell" size={20} color={w.accentColor} />
               </View>
-              <View style={styles.quickText}>
-                <Text style={styles.quickTitle}>{workout.title}</Text>
-                <Text style={styles.quickDuration}>{workout.duration}</Text>
+              <View style={s.routineInfo}>
+                <Text style={s.routineTitle}>{w.title}</Text>
+                <Text style={s.routineSub}>{w.exercises.map(e => e.name).slice(0, 2).join(' · ')}</Text>
               </View>
-              <View style={[styles.quickArrow, { backgroundColor: workout.color + '22' }]}>
-                <Icon name="chevron-right" size={18} color={workout.color} />
+              <View style={s.routineMeta}>
+                <Text style={s.routineTime}>{w.duration}</Text>
+                <Pill label={w.calories} />
               </View>
             </TouchableOpacity>
           ))}
         </View>
-      </ScrollView>
-    </View>
-  );
-};
 
-export default HomeScreen;
+        <View style={{ height: 32 }} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const s = StyleSheet.create({
+  safe:         { flex: 1, backgroundColor: COLORS.bg },
+  scroll:       { flex: 1 },
+  header:       { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 },
+  logo:         { fontSize: 24, fontWeight: '900', color: COLORS.accent, letterSpacing: 3 },
+  greeting:     { paddingHorizontal: 20, paddingBottom: 20 },
+  greetSub:     { fontSize: 14, color: COLORS.muted, marginBottom: 2 },
+  greetName:    { fontSize: 26, fontWeight: '700', color: COLORS.text },
+  goalCard:     { marginHorizontal: 20, marginBottom: 24, backgroundColor: COLORS.surface, borderRadius: 20, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  goalStats:    { gap: 18 },
+  statItem:     { gap: 2 },
+  statLabel:    { fontSize: 11, color: COLORS.muted },
+  statVal:      { fontSize: 22, fontWeight: '700', color: COLORS.text },
+  statUnit:     { fontSize: 14, color: COLORS.muted },
+  ringWrap:     { width: 84, height: 84, alignItems: 'center', justifyContent: 'center' },
+  ringCenter:   { position: 'absolute', alignItems: 'center' },
+  ringPct:      { fontSize: 10, color: COLORS.accent, fontWeight: '700', marginTop: 2 },
+  sectionPad:   { paddingHorizontal: 20 },
+  planScroll:   { paddingHorizontal: 20, gap: 12, paddingBottom: 4 },
+  planCard:     { borderRadius: 18, height: 170, padding: 14, justifyContent: 'space-between', overflow: 'hidden' },
+  planIcon:     { width: 32, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  planOverlay:  { gap: 4 },
+  planTitle:    { fontSize: 13, fontWeight: '700', color: '#fff' },
+  planMeta:     { fontSize: 10, color: 'rgba(255,255,255,0.6)' },
+  routineItem:  { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.surface, borderRadius: 16, padding: 14, marginBottom: 10, gap: 14 },
+  routineThumb: { width: 48, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  routineInfo:  { flex: 1, gap: 3 },
+  routineTitle: { fontSize: 14, fontWeight: '600', color: COLORS.text },
+  routineSub:   { fontSize: 12, color: COLORS.muted },
+  routineMeta:  { alignItems: 'flex-end', gap: 6 },
+  routineTime:  { fontSize: 11, color: COLORS.muted },
+});
