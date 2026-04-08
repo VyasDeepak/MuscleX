@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import OnboardingScreen from '../screens/Onboarding/OnboardingScreen';
+import OnboardingScreen from '../Screens/Onboarding';
 import BottomTabNavigator from './BottomTabNavigator';
 
 const Stack = createStackNavigator();

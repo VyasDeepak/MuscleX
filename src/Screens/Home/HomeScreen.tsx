@@ -33,7 +33,6 @@ const HomeScreen: React.FC = () => {
           </View>
         ))}
       </View>
-      {/* ...rest of the UI... */}
     </ScrollView>
   );
 };
