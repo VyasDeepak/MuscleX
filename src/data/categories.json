@@ -1,0 +1,17 @@
+[
+	{
+		"id": "c1",
+		"name": "Cardio",
+		"icon": "heartbeat"
+	},
+	{
+		"id": "c2",
+		"name": "Upper Body",
+		"icon": "arm-flex"
+	},
+	{
+		"id": "c3",
+		"name": "Lower Body",
+		"icon": "run"
+	}
+]

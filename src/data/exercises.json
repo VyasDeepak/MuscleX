@@ -2,25 +2,29 @@
   {
     "id": "e1",
     "name": "Jumping Jacks",
-    "duration": "30s",
+    "description": "A full body exercise that increases aerobic fitness.",
+    "categoryId": "c1",
     "image": "jumping_jacks.png"
   },
   {
     "id": "e2",
     "name": "High Knees",
-    "duration": "30s",
+    "description": "A cardio-intensive exercise that strengthens legs.",
+    "categoryId": "c1",
     "image": "high_knees.png"
   },
   {
     "id": "e3",
     "name": "Push Ups",
-    "duration": "15 reps",
+    "description": "A classic upper body strength exercise.",
+    "categoryId": "c2",
     "image": "push_ups.png"
   },
   {
     "id": "e4",
     "name": "Squats",
-    "duration": "20 reps",
+    "description": "A lower body exercise targeting the legs and glutes.",
+    "categoryId": "c3",
     "image": "squats.png"
   }
 ]

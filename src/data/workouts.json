@@ -1,16 +1,16 @@
 [
   {
     "id": "w1",
-    "title": "Cardio Blast",
-    "type": "Cardio",
-    "premium": false,
-    "exercises": ["e1", "e2"]
+    "name": "Cardio Blast",
+    "exercises": ["e1", "e2"],
+    "duration": 20,
+    "image": "cardio_blast.png"
   },
   {
     "id": "w2",
-    "title": "Strength Builder",
-    "type": "Strength",
-    "premium": true,
-    "exercises": ["e3", "e4"]
+    "name": "Strength Builder",
+    "exercises": ["e3", "e4"],
+    "duration": 25,
+    "image": "strength_builder.png"
   }
 ]
