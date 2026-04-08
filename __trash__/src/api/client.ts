@@ -36,7 +36,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error: any) => {
-    useUserStore.getState().setLoading(false);
+    
     return Promise.reject(error);
   },
 );
@@ -44,11 +44,11 @@ axiosInstance.interceptors.request.use(
 // 👉 Response Interceptor
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    useUserStore.getState().setLoading(false);
+    
     return response;
   },
   (error: any) => {
-    useUserStore.getState().setLoading(false);
+    
 
     if (error.response?.status === 401) {
       // Unauthorized - clear session and redirect to login
