@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from '../Screens/Home/HomeScreen';
+import HomeScreen from '../../src/Screens/Home';
 import WorkoutsScreen from '../Screens/Workouts/Workouts';
 import ProfileScreen from '../Screens/Profile/Profile';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

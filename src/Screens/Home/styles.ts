@@ -1,73 +1,181 @@
 import { StyleSheet } from 'react-native';
-import colors from '../../theme/colors';
+
+// ─── Design Tokens ────────────────────────────────────────────────
+const BG        = '#0A0A0F';
+const SURFACE   = '#13131A';
+const CARD      = '#1A1A24';
+const BORDER    = '#ffffff0f';
+const TEXT      = '#F0F0F5';
+const MUTED     = '#6B6B80';
+const PRIMARY   = '#FF6B6B';
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: BG,
+  },
   container: {
     flex: 1,
-    backgroundColor: colors.background,
     paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingTop: 16,
   },
+
+  // ── Header ──────────────────────────────────────────────────────
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 20,
   },
   greeting: {
-    color: colors.secondaryText,
-    fontSize: 14,
+    color: MUTED,
+    fontSize: 13,
+    letterSpacing: 0.4,
     marginBottom: 4,
   },
   userName: {
-    color: colors.text,
-    fontSize: 20,
-    fontWeight: 'bold',
+    color: TEXT,
+    fontSize: 22,
+    fontWeight: '800',
+    letterSpacing: -0.5,
   },
   headerIcons: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  iconBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: CARD,
+    borderWidth: 1,
+    borderColor: BORDER,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconBtnAccent: {
+    position: 'relative',
+  },
+  notifDot: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: PRIMARY,
+    borderWidth: 1.5,
+    borderColor: BG,
+  },
+
+  // ── Streak Banner ────────────────────────────────────────────────
+  streakBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFB80015',
+    borderWidth: 1,
+    borderColor: '#FFB80035',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 24,
+  },
+  streakLeft: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
   },
-  bellIcon: {
-    marginLeft: 8,
+  streakEmoji: {
+    fontSize: 24,
   },
+  streakTitle: {
+    color: '#FFB800',
+    fontWeight: '700',
+    fontSize: 14,
+    letterSpacing: 0.2,
+  },
+  streakSub: {
+    color: '#FFB80099',
+    fontSize: 12,
+    marginTop: 2,
+  },
+  streakBadge: {
+    backgroundColor: '#FFB80025',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  streakBadgeText: {
+    color: '#FFB800',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+  },
+
+  // ── Tabs ─────────────────────────────────────────────────────────
   tabRow: {
     flexDirection: 'row',
+    backgroundColor: SURFACE,
+    borderRadius: 14,
+    padding: 4,
     marginBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    gap: 4,
   },
-  tab: {
-    color: colors.secondaryText,
-    fontSize: 14,
-    fontWeight: '500',
-    marginRight: 24,
-    paddingBottom: 12,
+  tabBtn: {
+    flex: 1,
+    paddingVertical: 9,
+    alignItems: 'center',
+    borderRadius: 11,
   },
-  tabActive: {
-    color: colors.primary,
-    fontWeight: 'bold',
+  tabBtnActive: {
+    backgroundColor: CARD,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  tabUnderline: {
-    borderBottomWidth: 2,
-    borderBottomColor: colors.primary,
+  tabText: {
+    color: MUTED,
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 0.2,
   },
+  tabTextActive: {
+    color: TEXT,
+    fontWeight: '700',
+  },
+
+  // ── Search ───────────────────────────────────────────────────────
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.card,
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 24,
+    backgroundColor: SURFACE,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: BORDER,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 28,
+    gap: 10,
   },
   input: {
     flex: 1,
-    color: colors.text,
-    marginLeft: 8,
+    color: TEXT,
     fontSize: 14,
+    letterSpacing: 0.2,
   },
+  filterBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 9,
+    backgroundColor: PRIMARY,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  // ── Categories ───────────────────────────────────────────────────
   categoryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -76,21 +184,25 @@ const styles = StyleSheet.create({
   categoryItem: {
     alignItems: 'center',
     flex: 1,
+    gap: 8,
   },
   categoryIconWrap: {
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 8,
-    width: 60,
-    height: 60,
+    width: 58,
+    height: 58,
+    borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff0a',
   },
   categoryText: {
-    color: colors.text,
-    fontSize: 12,
-    fontWeight: '500',
+    color: TEXT,
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.2,
   },
+
+  // ── Section Header ────────────────────────────────────────────────
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -98,98 +210,147 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: {
-    color: colors.text,
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: TEXT,
+    fontSize: 17,
+    fontWeight: '800',
+    letterSpacing: -0.3,
   },
   seeAll: {
-    color: colors.primary,
+    color: PRIMARY,
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: '600',
   },
-  workoutScroll: {
-    marginBottom: 32,
-  },
-  workoutContainer: {
+
+  // ── Exclusive Workout Cards ──────────────────────────────────────
+  workoutScrollContent: {
     paddingRight: 20,
     gap: 12,
+    marginBottom: 32,
   },
   workoutCard: {
-    width: 160,
-    backgroundColor: colors.card,
-    borderRadius: 12,
+    width: 170,
+    backgroundColor: CARD,
+    borderRadius: 18,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: BORDER,
   },
-  cardImage: {
-    height: 100,
-    backgroundColor: colors.border,
-    justifyContent: 'flex-start',
-    paddingTop: 8,
-    paddingLeft: 8,
+  cardAccentBar: {
+    height: 4,
+    width: '100%',
+  },
+  cardBody: {
+    padding: 14,
+  },
+  cardTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   badge: {
-    backgroundColor: '#FFB800',
-    color: '#000',
-    fontSize: 10,
-    fontWeight: 'bold',
+    borderRadius: 6,
     paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    alignSelf: 'flex-start',
+    paddingVertical: 3,
   },
-  cardContent: {
-    padding: 12,
+  badgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.8,
+  },
+  cardSessions: {
+    color: MUTED,
+    fontSize: 10,
+    fontWeight: '500',
   },
   workoutTitle: {
-    color: colors.text,
-    fontSize: 13,
-    fontWeight: 'bold',
-    marginBottom: 4,
+    color: TEXT,
+    fontSize: 15,
+    fontWeight: '800',
+    lineHeight: 20,
+    letterSpacing: -0.3,
+    marginBottom: 14,
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  trainerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  trainerAvatar: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  trainerInitial: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: '700',
   },
   trainerName: {
-    color: colors.secondaryText,
-    fontSize: 12,
-    marginBottom: 8,
+    color: MUTED,
+    fontSize: 11,
+    fontWeight: '500',
   },
   ratingRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 3,
   },
   rating: {
-    color: colors.secondaryText,
-    fontSize: 12,
+    color: '#FFB800',
+    fontSize: 11,
+    fontWeight: '700',
   },
-  quickWorkoutsContainer: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 24,
+
+  // ── Quick Workouts ────────────────────────────────────────────────
+  quickList: {
+    gap: 10,
   },
-  quickWorkoutItem: {
-    flex: 1,
+  quickItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.card,
-    borderRadius: 12,
-    padding: 12,
+    backgroundColor: CARD,
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: BORDER,
+    gap: 14,
   },
-  quickWorkoutBadge: {
-    backgroundColor: '#FF6B6B',
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    marginRight: 12,
+  quickIconWrap: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  quickWorkoutDuration: {
-    color: '#fff',
-    fontSize: 11,
-    fontWeight: 'bold',
-  },
-  quickWorkoutTitle: {
-    color: colors.text,
-    fontSize: 12,
-    fontWeight: 'bold',
+  quickText: {
     flex: 1,
+    gap: 3,
+  },
+  quickTitle: {
+    color: TEXT,
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+  },
+  quickDuration: {
+    color: MUTED,
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  quickArrow: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
