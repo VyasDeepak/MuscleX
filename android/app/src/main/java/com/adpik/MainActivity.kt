@@ -15,7 +15,7 @@ class MainActivity : ReactActivity() {
    */
   override fun getMainComponentName(): String = "Adpik"
   override fun onCreate(savedInstanceState: Bundle?) {
-    SplashScreen.show(this)
+   // SplashScreen.show(this)
     // RN template uses null here to avoid state-restore crashes on some devices
     super.onCreate(null)
   }

@@ -1,3 +1,14 @@
 module.exports = {
-  assets: ['src/assets/fonts/'], // path to your fonts/images folder
+  // ─── Font Assets for react-native-vector-icons ──────────────────
+  project: {
+    ios: {},
+    android: {},
+  },
+  
+  // ─── Fonts Path ──────────────────────────────────────────────────
+  assets: [
+    'src/assets/fonts/',
+    // react-native-vector-icons fonts
+    'node_modules/react-native-vector-icons/Fonts/',
+  ],
 };
