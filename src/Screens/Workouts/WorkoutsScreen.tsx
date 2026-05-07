@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,307 +7,272 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
+  FlatList,
 } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS } from '../../theme/colors';
-import { SectionHeader, Pill } from '../../Components/UI/Ui';
-import { WORKOUTS } from '../../data/workouts';
+import { Pill } from '../../Components/UI/Ui';
+import { WORKOUTS, FILTER_TAGS } from '../../data/workouts';
 
 const { width } = Dimensions.get('window');
-const CARD_W = (width - 56) / 2;
-
-const R = 34;
-const CIRC = 2 * Math.PI * R;
 
 interface Props {
   navigation?: any;
 }
 
-export default function HomeScreen({ navigation }: Props) {
-  const calorieProgress = 0.72;
-  const strokeDash = CIRC * calorieProgress;
+export default function WorkoutsScreen({ navigation }: Props) {
+  const [selectedTag, setSelectedTag] = useState('All');
+  
+  const filteredWorkouts = selectedTag === 'All' 
+    ? WORKOUTS 
+    : WORKOUTS.filter(w => w.tag === selectedTag);
 
   return (
     <SafeAreaView style={s.safe}>
-      <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
-        {/* ── Header ── */}
-        <View style={s.header}>
-          <Icon name="menu" size={22} color={COLORS.muted} />
-          <Text style={s.logo}>FITFLOW</Text>
-          <TouchableOpacity>
-            <Icon name="bell-outline" size={22} color={COLORS.text} />
+      {/* ── Header ── */}
+      <View style={s.header}>
+        <Text style={s.title}>Workouts</Text>
+        <TouchableOpacity>
+          <Icon name="magnify" size={22} color={COLORS.text} />
+        </TouchableOpacity>
+      </View>
+
+      {/* ── Filter Tags ── */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={s.tagScroll}
+        contentContainerStyle={s.tagContent}
+      >
+        {FILTER_TAGS.map((tag) => (
+          <TouchableOpacity
+            key={tag}
+            style={[
+              s.tag,
+              selectedTag === tag && s.tagActive,
+            ]}
+            onPress={() => setSelectedTag(tag)}
+          >
+            <Text
+              style={[
+                s.tagText,
+                selectedTag === tag && s.tagTextActive,
+              ]}
+            >
+              {tag}
+            </Text>
           </TouchableOpacity>
-        </View>
-
-        {/* ── Greeting ── */}
-        <View style={s.greeting}>
-          <Text style={s.greetSub}>Good Morning,</Text>
-          <Text style={s.greetName}>Alex! 👋</Text>
-        </View>
-
-        {/* ── Goal Card ── */}
-        <View style={s.goalCard}>
-          <View style={s.goalStats}>
-            <View style={s.statItem}>
-              <Text style={s.statLabel}>Goal</Text>
-              <Text style={s.statVal}>
-                864 <Text style={s.statUnit}>/ 1200 kcal</Text>
-              </Text>
-            </View>
-            <View style={s.statItem}>
-              <Text style={s.statLabel}>Steps</Text>
-              <Text style={s.statVal}>
-                8k<Text style={s.statUnit}> / 10k</Text>
-              </Text>
-            </View>
-            <View style={s.statItem}>
-              <Text style={s.statLabel}>Active</Text>
-              <Text style={s.statVal}>
-                38<Text style={s.statUnit}> min</Text>
-              </Text>
-            </View>
-          </View>
-
-          {/* SVG Ring */}
-          <View style={s.ringWrap}>
-            <Svg width={84} height={84} viewBox="0 0 84 84">
-              <Circle
-                cx="42"
-                cy="42"
-                r={R}
-                fill="none"
-                stroke="#2a2a2a"
-                strokeWidth={7}
-              />
-              <Circle
-                cx="42"
-                cy="42"
-                r={R}
-                fill="none"
-                stroke={COLORS.accent}
-                strokeWidth={7}
-                strokeDasharray={`${strokeDash} ${CIRC}`}
-                strokeDashoffset={CIRC * 0.25}
-                strokeLinecap="round"
-                rotation="-90"
-                origin="42,42"
-              />
-            </Svg>
-            <View style={s.ringCenter}>
-              <Icon name="lightning-bolt" size={18} color={COLORS.accent} />
-              <Text style={s.ringPct}>
-                {Math.round(calorieProgress * 100)}%
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        {/* ── Quick Stats ── */}
-        <View style={s.quickStats}>
-          {[
-            {
-              icon: 'fire',
-              label: 'Streak',
-              val: '7 days',
-              color: COLORS.accent3,
-            },
-            {
-              icon: 'dumbbell',
-              label: 'Week',
-              val: '4 done',
-              color: COLORS.accent,
-            },
-            {
-              icon: 'heart-pulse',
-              label: 'Avg HR',
-              val: '142 bpm',
-              color: COLORS.danger,
-            },
-          ].map(q => (
-            <View key={q.label} style={s.quickItem}>
-              <Icon name={q.icon} size={18} color={q.color} />
-              <Text style={s.quickVal}>{q.val}</Text>
-              <Text style={s.quickLabel}>{q.label}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* ── Today's Plan ── */}
-        <View style={s.sectionPad}>
-          <SectionHeader
-            title="Today's Plan"
-            onAction={() => navigation?.navigate('Workouts')}
-          />
-        </View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={s.planScroll}
-        >
-          {WORKOUTS.map(w => (
-            <TouchableOpacity
-              key={w.id}
-              style={[s.planCard, { backgroundColor: w.color, width: CARD_W }]}
-              onPress={() =>
-                navigation?.navigate('ExerciseDetails', { workout: w })
-              }
-            >
-              <View style={[s.planIcon, { backgroundColor: w.accentColor }]}>
-                <Icon name="dumbbell" size={16} color="#000" />
-              </View>
-              <View style={s.planOverlay}>
-                <Text style={s.planTitle}>{w.title}</Text>
-                <Text style={s.planMeta}>
-                  {w.duration} · {w.calories}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-
-        {/* ── My Routines ── */}
-        <View style={[s.sectionPad, { marginTop: 24 }]}>
-          <SectionHeader
-            title="My Routines"
-            onAction={() => navigation?.navigate('Workouts')}
-          />
-          {WORKOUTS.map(w => (
-            <TouchableOpacity
-              key={w.id}
-              style={s.routineItem}
-              onPress={() =>
-                navigation?.navigate('ExerciseDetails', { workout: w })
-              }
-            >
-              <View style={[s.routineThumb, { backgroundColor: w.color }]}>
-                <Icon name="dumbbell" size={20} color={w.accentColor} />
-              </View>
-              <View style={s.routineInfo}>
-                <Text style={s.routineTitle}>{w.title}</Text>
-                <Text style={s.routineSub}>
-                  {w.exercises
-                    .slice(0, 2)
-                    .map(e => e.name)
-                    .join(' · ')}
-                </Text>
-              </View>
-              <View style={s.routineMeta}>
-                <Text style={s.routineTime}>{w.duration}</Text>
-                <Pill label={w.calories} />
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <View style={{ height: 32 }} />
+        ))}
       </ScrollView>
+
+      {/* ── Workouts List ── */}
+      <FlatList
+        data={filteredWorkouts}
+        renderItem={({ item: workout }) => (
+          <TouchableOpacity
+            style={s.workoutCard}
+            onPress={() =>
+              navigation?.navigate('ExerciseDetails', { workout })
+            }
+          >
+            {/* Card Background */}
+            <View
+              style={[
+                s.cardBackground,
+                { backgroundColor: workout.color },
+              ]}
+            />
+
+            {/* Card Content */}
+            <View style={s.cardContent}>
+              <View style={s.cardTop}>
+                <View style={s.cardInfo}>
+                  <Text style={s.workoutTitle}>{workout.title}</Text>
+                  <Text style={s.workoutDesc}>{workout.targetMuscle}</Text>
+                </View>
+                <View
+                  style={[
+                    s.difficultyBadge,
+                    {
+                      backgroundColor: workout.accentColor,
+                    },
+                  ]}
+                >
+                  <Text style={s.difficultyText}>
+                    {workout.difficulty.charAt(0)}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.cardStats}>
+                <View style={s.statItem}>
+                  <Icon name="clock-outline" size={14} color={COLORS.text} />
+                  <Text style={s.statText}>{workout.duration}</Text>
+                </View>
+                <View style={s.statItem}>
+                  <Icon name="fire" size={14} color={COLORS.accent3} />
+                  <Text style={s.statText}>{workout.calories}</Text>
+                </View>
+                <View style={s.statItem}>
+                  <Icon name="barbell" size={14} color={COLORS.accent} />
+                  <Text style={s.statText}>{workout.exercises.length} ex</Text>
+                </View>
+              </View>
+
+              <View style={s.cardFooter}>
+                <View style={s.ratingWrap}>
+                  <Icon name="star" size={12} color={COLORS.accent} />
+                  <Text style={s.rating}>
+                    {workout.rating?.toFixed(1) || '4.5'} ({workout.reviews || 0})
+                  </Text>
+                </View>
+                <Icon name="chevron-right" size={20} color={COLORS.muted} />
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
+        scrollEnabled={false}
+        contentContainerStyle={s.listContent}
+      />
+
+      <View style={{ height: 32 }} />
     </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.bg },
-  scroll: { flex: 1 },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 8,
+    paddingBottom: 16,
   },
-  logo: {
-    fontSize: 24,
-    fontWeight: '900',
-    color: COLORS.accent,
-    letterSpacing: 3,
+  title: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: COLORS.text,
   },
-  greeting: { paddingHorizontal: 20, paddingBottom: 20 },
-  greetSub: { fontSize: 14, color: COLORS.muted, marginBottom: 2 },
-  greetName: { fontSize: 26, fontWeight: '700', color: COLORS.text },
-  goalCard: {
-    marginHorizontal: 20,
+  tagScroll: {
+    paddingHorizontal: 20,
     marginBottom: 16,
-    backgroundColor: COLORS.surface,
+  },
+  tagContent: {
+    gap: 8,
+    paddingRight: 20,
+  },
+  tag: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 20,
-    padding: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  goalStats: { gap: 14 },
-  statItem: { gap: 2 },
-  statLabel: { fontSize: 11, color: COLORS.muted },
-  statVal: { fontSize: 18, fontWeight: '700', color: COLORS.text },
-  statUnit: { fontSize: 12, color: COLORS.muted },
-  ringWrap: {
-    width: 84,
-    height: 84,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ringCenter: { position: 'absolute', alignItems: 'center' },
-  ringPct: {
-    fontSize: 10,
-    color: COLORS.accent,
-    fontWeight: '700',
-    marginTop: 2,
-  },
-  quickStats: {
-    flexDirection: 'row',
-    marginHorizontal: 20,
-    marginBottom: 24,
-    gap: 10,
-  },
-  quickItem: {
-    flex: 1,
     backgroundColor: COLORS.surface,
-    borderRadius: 14,
-    padding: 14,
-    alignItems: 'center',
-    gap: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border,
   },
-  quickVal: { fontSize: 14, fontWeight: '700', color: COLORS.text },
-  quickLabel: { fontSize: 10, color: COLORS.muted },
-  sectionPad: { paddingHorizontal: 20 },
-  planScroll: { paddingHorizontal: 20, gap: 12, paddingBottom: 4 },
-  planCard: {
-    borderRadius: 18,
-    height: 170,
+  tagActive: {
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
+  },
+  tagText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: COLORS.muted,
+  },
+  tagTextActive: {
+    color: '#000',
+  },
+  listContent: {
+    paddingHorizontal: 20,
+    gap: 12,
+  },
+  workoutCard: {
+    height: 160,
+    borderRadius: 16,
+    overflow: 'hidden',
+    marginBottom: 4,
+  },
+  cardBackground: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  cardContent: {
+    flex: 1,
     padding: 14,
     justifyContent: 'space-between',
-    overflow: 'hidden',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    borderRadius: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: 'rgba(255,255,255,0.2)',
   },
-  planIcon: {
+  cardTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  cardInfo: {
+    flex: 1,
+  },
+  workoutTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  workoutDesc: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.7)',
+  },
+  difficultyBadge: {
     width: 32,
     height: 32,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  planOverlay: { gap: 4 },
-  planTitle: { fontSize: 13, fontWeight: '700', color: '#fff' },
-  planMeta: { fontSize: 10, color: 'rgba(255,255,255,0.6)' },
-  routineItem: {
+  difficultyText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#000',
+  },
+  cardStats: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  statItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    borderRadius: 16,
-    padding: 14,
-    marginBottom: 10,
-    gap: 14,
+    gap: 4,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 8,
   },
-  routineThumb: {
-    width: 48,
-    height: 48,
-    borderRadius: 14,
+  statText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  routineInfo: { flex: 1, gap: 3 },
-  routineTitle: { fontSize: 14, fontWeight: '600', color: COLORS.text },
-  routineSub: { fontSize: 12, color: COLORS.muted },
-  routineMeta: { alignItems: 'flex-end', gap: 6 },
-  routineTime: { fontSize: 11, color: COLORS.muted },
+  ratingWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  rating: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#fff',
+  },
 });

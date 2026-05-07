@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS } from '../../theme/colors';
 import { ProgressBar } from '../../Components/UI/Ui';
+import { CURRENT_USER, USER_STATS } from '../../data/data';
 
 interface MenuItem {
   icon: string;
@@ -28,13 +29,9 @@ const MENU_ITEMS: MenuItem[] = [
   { icon: 'help-circle-outline', label: 'Help & Support' },
 ];
 
-const STAT_ITEMS = [
-  { value: '113', label: 'Followers' },
-  { value: '28', label: 'Workouts' },
-  { value: '4.2k', label: 'Calories' },
-];
-
 export default function ProfileScreen() {
+  const weeklyProgress = (USER_STATS.weeklyProgress / USER_STATS.weeklyGoal) * 100;
+  
   return (
     <SafeAreaView style={s.safe}>
       <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
@@ -50,7 +47,7 @@ export default function ProfileScreen() {
         <View style={s.profileBlock}>
           <View style={s.avatarWrap}>
             <View style={s.avatar}>
-              <Icon name="account" size={44} color={COLORS.muted} />
+              <Text style={s.avatarText}>{CURRENT_USER.avatar}</Text>
             </View>
             <TouchableOpacity
               style={s.editBadge}
@@ -61,24 +58,27 @@ export default function ProfileScreen() {
               <Icon name="pencil" size={12} color="#000" />
             </TouchableOpacity>
           </View>
-          <Text style={s.name}>Alex Johnson</Text>
-          <Text style={s.handle}>@alex.fitflow</Text>
+          <Text style={s.name}>{CURRENT_USER.name}</Text>
+          <Text style={s.handle}>{CURRENT_USER.handle}</Text>
 
           {/* Stats Row */}
           <View style={s.statsRow}>
-            {STAT_ITEMS.map((st, i) => (
-              <React.Fragment key={st.label}>
-                {i > 0 && <View style={s.statDivider} />}
-                <View style={s.statCell}>
-                  <Text
-                    style={[s.statVal, i === 1 && { color: COLORS.accent }]}
-                  >
-                    {st.value}
-                  </Text>
-                  <Text style={s.statLabel}>{st.label}</Text>
-                </View>
-              </React.Fragment>
-            ))}
+            <View style={s.statCell}>
+              <Text style={s.statVal}>{USER_STATS.followers}</Text>
+              <Text style={s.statLabel}>Followers</Text>
+            </View>
+            <View style={s.statDivider} />
+            <View style={s.statCell}>
+              <Text style={[s.statVal, { color: COLORS.accent }]}>
+                {USER_STATS.totalWorkouts}
+              </Text>
+              <Text style={s.statLabel}>Workouts</Text>
+            </View>
+            <View style={s.statDivider} />
+            <View style={s.statCell}>
+              <Text style={s.statVal}>{(USER_STATS.totalCalories / 1000).toFixed(1)}k</Text>
+              <Text style={s.statLabel}>Calories</Text>
+            </View>
           </View>
         </View>
 
@@ -96,15 +96,26 @@ export default function ProfileScreen() {
         <View style={s.progressCard}>
           <Text style={s.progressTitle}>Weekly Goal</Text>
           <ProgressBar
-            progress={0.8}
-            label="4 of 5 workout days"
-            rightLabel="80%"
+            progress={weeklyProgress / 100}
+            label={`${USER_STATS.weeklyProgress} of ${USER_STATS.weeklyGoal} workout days`}
+            rightLabel={`${Math.round(weeklyProgress)}%`}
             style={{ marginTop: 10 }}
           />
           <View style={s.progressDots}>
             {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
-              <View key={i} style={[s.dayDot, i < 4 && s.dayDotDone]}>
-                <Text style={[s.dayLabel, i < 4 && { color: '#000' }]}>
+              <View 
+                key={i} 
+                style={[
+                  s.dayDot, 
+                  i < USER_STATS.weeklyProgress && s.dayDotDone
+                ]}
+              >
+                <Text 
+                  style={[
+                    s.dayLabel, 
+                    i < USER_STATS.weeklyProgress && { color: '#000' }
+                  ]}
+                >
                   {d}
                 </Text>
               </View>
@@ -119,8 +130,8 @@ export default function ProfileScreen() {
               <Icon name="fire" size={22} color="#000" />
             </View>
             <View>
-              <Text style={s.levelTitle}>Intermediate</Text>
-              <Text style={s.levelSub}>Level 12 · 2,340 XP</Text>
+              <Text style={s.levelTitle}>{CURRENT_USER.fitnessLevel}</Text>
+              <Text style={s.levelSub}>Streak: {USER_STATS.currentStreak} days 🔥</Text>
             </View>
           </View>
           <ProgressBar
@@ -211,6 +222,11 @@ const s = StyleSheet.create({
     borderColor: COLORS.accent,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  avatarText: {
+    fontSize: 36,
+    fontWeight: '700',
+    color: COLORS.accent,
   },
   editBadge: {
     position: 'absolute',

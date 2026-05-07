@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS } from '../../theme/colors';
 import { SectionHeader, Pill } from '../../Components/UI/Ui';
 import { WORKOUTS } from '../../data/workouts';
+import { CURRENT_USER, TODAY_PROGRESS } from '../../data/data';
 
 const { width } = Dimensions.get('window');
 const CARD_W = (width - 56) / 2;
@@ -24,14 +25,10 @@ interface Props {
   navigation?: any;
 }
 
-console.log('HomeScreen rendered', WORKOUTS);
-
 export default function HomeScreen({ navigation }: Props) {
-  const calorieProgress = 0.72;
+  const calorieProgress = TODAY_PROGRESS.calories / TODAY_PROGRESS.calorieGoal;
   const strokeDash = CIRC * calorieProgress;
-
-
-  return <View style={{ flex: 1, backgroundColor: COLORS.bg }} />;
+  const stepsProgress = (TODAY_PROGRESS.steps / TODAY_PROGRESS.stepGoal) * 100;
 
   return (
     <SafeAreaView style={s.safe}>
@@ -48,7 +45,7 @@ export default function HomeScreen({ navigation }: Props) {
         {/* ── Greeting ── */}
         <View style={s.greeting}>
           <Text style={s.greetSub}>Good Morning,</Text>
-          <Text style={s.greetName}>Alex! 👋</Text>
+          <Text style={s.greetName}>{CURRENT_USER.name.split(' ')[0]}! 👋</Text>
         </View>
 
         {/* ── Goal Card ── */}
@@ -57,19 +54,19 @@ export default function HomeScreen({ navigation }: Props) {
             <View style={s.statItem}>
               <Text style={s.statLabel}>Goal</Text>
               <Text style={s.statVal}>
-                864 <Text style={s.statUnit}>/ 1200 kcal</Text>
+                {TODAY_PROGRESS.calories} <Text style={s.statUnit}>/ {TODAY_PROGRESS.calorieGoal} kcal</Text>
               </Text>
             </View>
             <View style={s.statItem}>
               <Text style={s.statLabel}>Steps</Text>
               <Text style={s.statVal}>
-                8k<Text style={s.statUnit}> / 10k</Text>
+                {(TODAY_PROGRESS.steps / 1000).toFixed(1)}k<Text style={s.statUnit}> / 10k</Text>
               </Text>
             </View>
             <View style={s.statItem}>
               <Text style={s.statLabel}>Active</Text>
               <Text style={s.statVal}>
-                38<Text style={s.statUnit}> min</Text>
+                {TODAY_PROGRESS.activeMinutes}<Text style={s.statUnit}> min</Text>
               </Text>
             </View>
           </View>
@@ -114,13 +111,13 @@ export default function HomeScreen({ navigation }: Props) {
             {
               icon: 'fire',
               label: 'Streak',
-              val: '7 days',
+              val: '12 days',
               color: COLORS.accent3,
             },
             {
               icon: 'dumbbell',
               label: 'Week',
-              val: '4 done',
+              val: '4/5 done',
               color: COLORS.accent,
             },
             {
@@ -150,7 +147,7 @@ export default function HomeScreen({ navigation }: Props) {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={s.planScroll}
         >
-          {WORKOUTS.map(w => (
+          {WORKOUTS.slice(0, 5).map(w => (
             <TouchableOpacity
               key={w.id}
               style={[s.planCard, { backgroundColor: w.color, width: CARD_W }]}
@@ -177,7 +174,7 @@ export default function HomeScreen({ navigation }: Props) {
             title="My Routines"
             onAction={() => navigation?.navigate('Workouts')}
           />
-          {WORKOUTS?.map(w => (
+          {WORKOUTS.slice(0, 5).map(w => (
             <TouchableOpacity
               key={w.id}
               style={s.routineItem}
@@ -283,6 +280,13 @@ const s = StyleSheet.create({
     padding: 14,
     justifyContent: 'space-between',
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 6,
+    borderLeftWidth: 4,
+    borderLeftColor: 'rgba(255,255,255,0.15)',
   },
   planIcon: {
     width: 32,
